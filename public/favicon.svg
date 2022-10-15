@@ -1,0 +1,19 @@
+<svg id="Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+    <defs>
+        <style>
+            .cls-1 {
+                fill: #FF5C33;
+            }
+            .cls-2 {
+                fill: none;
+                stroke: #FF5C33;
+                stroke-miterlimit: 10;
+                stroke-width: 80px;
+            }
+        </style>
+    </defs>
+    <title>Logo</title>
+    <circle class="cls-1" cx="250" cy="250" r="70"/>
+    <path class="cls-2" d="M122.72,377.28a180,180,0,0,1,0-254.56"/>
+    <path class="cls-2" d="M377.28,122.72a180,180,0,0,1,0,254.56"/>
+</svg>

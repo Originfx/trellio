@@ -1,0 +1,79 @@
+* {
+	box-sizing: border-box;
+	outline: none;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+}
+
+main {
+	display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+}
+
+a {
+	background-color: transparent;
+	text-decoration: none;
+	color: inherit;
+}
+
+p {
+	margin: 0;
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style-type: none;
+}
+
+blockquote {
+	margin: 0;
+}
+
+button,
+input,
+textarea,
+select {
+	font-family: inherit;
+	font-size: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+figure {
+	margin: 0;
+}
+
+fieldset {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+dl,
+dt,
+dd {
+	padding: 0;
+	margin: 0;
+}
+
+pre {
+	margin: 0;
+}

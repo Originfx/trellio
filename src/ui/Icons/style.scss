@@ -1,0 +1,34 @@
+i {
+	vertical-align: middle;
+}
+
+.icon {
+	position: relative;
+	display: inline-block;
+	width: 32px;
+	aspect-ratio: 1 / 1;
+	background: #000;
+	mask-size  : contain;
+	mask-position: center;
+	mask-repeat: no-repeat;
+}
+
+.icon-arrow-left {
+	mask-image: url(./assets/icon-arrow-left.svg);
+}
+
+.icon-arrow-right {
+	mask-image: url(./assets/icon-arrow-right.svg);
+}
+
+.icon-add-thin {
+	mask-image: url(./assets/icon-add-thin.svg);
+}
+
+.icon-remove-thin {
+	mask-image: url(./assets/icon-remove-thin.svg);
+}
+
+.icon-close-thin {
+	mask-image: url(./assets/icon-close-thin.svg);
+}
