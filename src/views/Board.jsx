@@ -1,9 +1,9 @@
 import React from "react";
 
 // Импорт компонента страницы
-import Source from '../components/Cards';
+import Source from '../components/Board';
 
-const Cards = () => {
+const Board = () => {
 	return (
 		<>
 			<Source />
@@ -11,4 +11,4 @@ const Cards = () => {
 	);
 }
 
-export default Cards;
+export default Board;

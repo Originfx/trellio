@@ -2,20 +2,20 @@ import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // Импорт контекста
-import {FlowContext} from "../context";
+import {СontextFlow} from "../context";
 
 // Импорт стандартного шаблона
 import LayoutDeafult from "../layouts/Default";
 
 // Импорт отдельных страниц
 import Boards from "../views/Boards";
-import Cards from "../views/Cards";
+import Board from "../views/Board";
 
 import NotFound from "../views/NotFound";
 
 const AppRouter = () => {
 	// Обмен контекстом - Подгрузка приложения
-	let {appLoading} = useContext(FlowContext);
+	let {appLoading} = useContext(СontextFlow);
 
 	// Если приложение загружается
 	if (appLoading) {
@@ -27,7 +27,7 @@ const AppRouter = () => {
 			<Route path="/" element={<LayoutDeafult />}>
 				<Route index element={<Boards />} />
 
-				<Route path="cards/:id" element={<Cards />} />
+				<Route path="board/:id" element={<Board />} />
 				
 				<Route path="*" element={<NotFound />} />
 			</Route>

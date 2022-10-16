@@ -1,0 +1,66 @@
+/* // BOARD CARDS //////////////////////////// */
+.board-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: flex-start;
+    gap: 15px;
+
+    &__item {
+        padding: 15px;
+        background-color: white;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.05);
+        border-radius: 5px;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        span {
+            font-weight: 500;
+            font-size: 1.25em;
+        }
+
+        i {
+            width: 1.5em;
+            background-color: var(--grey);
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--primary);
+            }
+        }
+    }
+
+    &__add {
+        height: 50px;
+        padding: 15px;
+        font-weight: 300;
+        font-size: 3em;
+        color: var(--grey);
+        background-color: #E6EBF5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed #BDC2D9;
+        border-radius: 5px;
+        cursor: pointer;
+        line-height: 150%;
+
+        i {
+            background-color: var(--grey);
+        }
+
+        &:hover {
+            color: var(--primary);
+            border: 2px solid var(--primary);
+
+            i {
+                background-color: var(--primary);
+            }
+        }
+    }
+}
+
+/* /////////////////////////////////////////// */

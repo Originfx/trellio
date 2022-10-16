@@ -43,6 +43,27 @@ section {
 
 /* /////////////////////////////////////////// */
 
+/* // BANNER ///////////////////////////////// */
+.banner {
+    background-color: white;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.05);
+
+    &__logo {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+
+        span {
+            position: relative;
+            font-weight: 700;
+            font-size: 2em;
+            color: var(--dark);
+        }
+    }
+}
+
+/* /////////////////////////////////////////// */
+
 /* // BREADCRUMBS //////////////////////////// */
 /* /////////////////////////////////////////// */
 
@@ -56,7 +77,6 @@ section {
         font-size: 1.5em;
         color: var(--dark);
         line-height: 140%;
-        text-transform: capitalize;
     }
     
     p {
@@ -92,12 +112,13 @@ section {
 
 /* // FOOTER ///////////////////////////////// */
 .footer {
-    padding: 5px 0;
-    background-color: #fff;
-
+    padding: 10px 0;
+    background-color: var(--primary);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.05);
+    
     p {
         font-size: 0.875em;
-        color: var(--grey);
+        color: white;
 
         span {
             font-weight: 500;
@@ -119,11 +140,9 @@ section {
     justify-content: center;
     background-color: rgba(0,0,0,0.25);
 
-    &__window {
+    &__inner {
         padding: 15px;
         background-color: white;
-        display: flex;
-        flex-flow: column;
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.05);
         border-radius: 5px;
 
@@ -152,10 +171,9 @@ section {
             font-size: 0.875em;
             color: var(--grey);
             background-color: unset;
-            padding: 10px 0;
+            padding: 5px 0;
             border: none;
             cursor: pointer;
-            margin-right: 15px;
 
             &:hover {
                 color: var(--primary);

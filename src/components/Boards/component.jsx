@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-// Импорт - Работа с localStorage
-import { readLocalStorage, createLocalStorage, deleteLocalStorage } from '../../utils/localStorage'
+// Импорт контекста
+import {СontextFlow} from "../../context";
 
 // Импорт компонента - Иконки
 import Icons from "../../ui/Icons";
@@ -12,26 +12,70 @@ import "./style.scss";
 
 const Boards = () => {
 	// Список досок
-	let [boards, setBoards] = useState( readLocalStorage("boards") );
+	let [boards, setBoards] = useState([]);
+	// Название новой доски
+	let [boardName, setBoardName] = useState("");
 	// Модальное окно
 	let [modal, setModal] = useState(false);
-	// Название новой доски
-	let [newBoard, setNewBoard] = useState("");
 
-	// Создание доски
+	// Обмен контекстом - Подгрузка приложения
+	let {updateData} = useContext(СontextFlow);
+
+	// Получить список досок из localStorage
+	const getAllBoards = () => {
+		return JSON.parse(localStorage.getItem("boards")) || [];
+	};
+
+	// Создание новой доски
 	const createBoard = () => {
-		// Обновить 
-		setBoards( createLocalStorage({ name: newBoard, id: Date.now() }) );
+		// Получить список досок из localStorage
+		let storage = getAllBoards();
+		// Поместить новую доску
+		storage.push({ id: Date.now(), name: boardName });
+		// Обновить список досок в localStorage
+		updateBoards(storage);
 		// Закрыть модальное окно
 		setModal(false);
 		// Очистить название новой доски
-		setNewBoard("");
+		setBoardName("");
 	}
 
-	// Хук эффекта - при изменении досок
+	// Изменить доску
+	const editBoard = (id) => {
+		// Получить список досок из localStorage
+		let storage = getAllBoards();
+		// Отсеять доску по id и задать новое имя
+		storage.map(el => el.id === id && (el.name = boardName));
+		// Обновить список досок в localStorage
+		updateBoards(storage);
+		// Закрыть модальное окно
+		setModal(false);
+		// Очистить название новой доски
+		setBoardName("");
+	};
+
+	// Удалить доску
+	const deleteBoard = (id) => {
+		// Получить список досок из localStorage
+		let storage = getAllBoards();
+		// Отсеять доску по id
+		storage = storage.filter(el => el.id !== id);
+		// Обновить список досок в localStorage
+		updateBoards(storage);
+	};
+
+	// Обновить список досок в localStorage
+	const updateBoards = (storage) => {
+		localStorage.setItem('boards', JSON.stringify(storage));
+		// Получить список досок из localStorage
+		setBoards(getAllBoards());
+	};
+
+	// Хук эффекта - при первой загрузке
 	useEffect(() => {
-		console.log(boards)
-	}, []) // eslint-disable-line
+		// Получить список досок из localStorage
+		setBoards(getAllBoards());
+	}, [updateData]) // eslint-disable-line
 
 	return (
 		<>
@@ -43,48 +87,58 @@ const Boards = () => {
 					</div>
 					
 					<div className="boards__list">
-
 						{boards.map(el =>
 							<div className="boards__item" key={el.id}>
-								<Link to={"/cards/" + el.id}>{el.name}</Link>
+								<Link to={"/board/" + el.id}>{el.name}</Link>
 								<span>{el.id}</span>
 								<ul>
-									<li>Изменить</li>
-									<li onClick={() => setBoards( deleteLocalStorage(el.id) )}>Удалить</li>
+									<li onClick={() => setModal(el)}>Изменить</li>
+									<li onClick={() => deleteBoard(el.id)}>Удалить</li>
 								</ul>
 							</div>
 						)}
 
-						{ boards.length < 8 &&
+						{boards.length < 8 &&
 							<div className="boards__add" onClick={() => setModal(true)}>
 								<Icons name={"icon-add-thin"} />
 							</div>
 						}
-
 					</div>
 				</div>
 			</div>
 
-			{modal && 
+			{modal &&
 				<div className="modal">
-					<div className="modal__window">
-						<div className="modal__window-new">
-							<h3>Создание новой доски</h3>
+					<div className="modal__inner">
+						{modal.id
+						?	
+							<div className="modal__window">
+								<form>
+									<h3>Изменение доски</h3>
+									<label>Введите новое название</label>
+									<input
+										value={boardName}
+										onChange={e => setBoardName(e.target.value )}
+									/>
+									<button type="submit" onClick={(e) => {e.preventDefault(); editBoard(modal.id)}} >Изменить</button>
+								</form>
+							</div>
+						:
+							<div className="modal__window">
+								<form>
+									<h3>Создание новой доски</h3>
+									<label>Введите название</label>
+									<input
+										value={boardName}
+										onChange={e => setBoardName(e.target.value)}
+										autoFocus={true}
+									/>
+									<button type="submit" onClick={(e) => {e.preventDefault(); createBoard()}} >Создать</button>
+								</form>
+							</div>
+						}
 
-							<form>
-								<label>Введите название</label>
-								<input
-									value={newBoard}
-									onChange={e => setNewBoard(e.target.value)}
-								/>
-
-								<button onClick={() => createBoard()}>Создать</button>
-								<button onClick={() => setModal(false)}>Отмена</button>
-							</form>
-
-							
-						</div>
-
+						<button onClick={() => setModal(false)}>Отмена</button>
 					</div>
 				</div>
 			}

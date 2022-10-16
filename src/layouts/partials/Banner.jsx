@@ -1,13 +1,15 @@
 import React from "react";
-
-// Импорт компонента
-import Source from '../../components/Banner';
+import { Link } from "react-router-dom";
 
 const Banner = () => {
 	return (
-		<>
-			<Source />
-		</>
+		<div className="banner">
+			<div className="container">
+				<div className="banner__logo">
+					<Link to="/" ><span>Trellio</span></Link>
+				</div>
+			</div>
+		</div>
 	);
 }
 

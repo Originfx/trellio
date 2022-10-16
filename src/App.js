@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 
 // Импорт контекста
-import {FlowContext} from "./context/index";
+import {СontextFlow} from "./context/index";
 
 // Импорт путей маршрутизации приложения
 import AppRouter from "./routes";
@@ -16,6 +16,16 @@ const App = () => {
 	// Подгрузка приложения
 	let [appLoading, setAppLoading] = useState(true);
 
+	// Обновление localStorage 
+	let [updateData, setUpdateData] = useState(false);
+
+	// Событие localStorage
+	window.onstorage = () => {
+		// При изменении localStorage - обновить данные.
+		setUpdateData(!updateData)
+	}
+
+
 	// Хук эффекта - Один раз
 	useEffect(() => {
 		// Приложение загружено
@@ -23,15 +33,15 @@ const App = () => {
     }, [])
 
 	return (
-		<FlowContext.Provider
+		<СontextFlow.Provider
 			value={{
-				appLoading,
+				appLoading, updateData
         	}}
 		>
 			<BrowserRouter>
 				<AppRouter />
 			</BrowserRouter>
-		</FlowContext.Provider>
+		</СontextFlow.Provider>
 	)
 }
 
