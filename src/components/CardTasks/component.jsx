@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 
+// Операции хранилища
+import LocalStorage from "../../utils/localStorage";
+
 // Импорт контекста
 import {СontextFlow} from "../../context";
 
@@ -20,52 +23,40 @@ const CardTasks = ({id}) => {
 	// Обмен контекстом - Обновление localStorage
 	let {updateData} = useContext(СontextFlow);
 
-	// Получить список всех задач текущей карточки из localStorage
-	const getTasks = () => {
-		let data = JSON.parse(localStorage.getItem("tasks")) || [];
-		return data.filter(el => el.parent_id == id) || [];
-	};
-
-	// Получить список всех задач текущей карточки из localStorage
-	const getAllTasks = () => {
-		return JSON.parse(localStorage.getItem("tasks")) || [];
-	};
-
 	// Создание новой задачи
 	const createTask = () => {
-		// Получить список всех задач из localStorage
-		let storage = getAllTasks();
-		// Поместить новую задачу
-		storage.push({ id: Date.now(), parent_id: id, text: taskName });
-		// Обновить список задач в localStorage
-		updateTasks(storage);
+		LocalStorage.tasks.create(id, taskName);
+		// Обновить список
+		getTasks();
 		// Закрыть модальное окно
 		setModal(false);
 		// Очистить название новой задачи
 		setTaskName("");
 	}
 
+	// Создание новой задачи
+	const moveTask = (el, direction) => {
+		LocalStorage.tasks.move(el, direction);
+		// Обновить список
+		getTasks();
+	}
+
 	// Удалить задачу
 	const deleteTask = (id) => {
-		// Получить список всех задач из localStorage
-		let storage = getAllTasks();
-		// Отсеять карточку по id
-		storage = storage.filter(el => el.id !== id);
-		// Обновить список задач в localStorage
-		updateTasks(storage);
+		LocalStorage.tasks.delete(id);
+		// Обновить список
+		getTasks();
 	};
 
-	// Обновить список задач в localStorage
-	const updateTasks = (storage) => {
-		localStorage.setItem('tasks', JSON.stringify(storage));
-		// Получить список всех задач текущей карточки из localStorage
-		setTasks(getTasks());
+	// Получить список всех задач текущей карточки из localStorage
+	const getTasks = () => {
+		setTasks(LocalStorage.tasks.get(id));
 	};
 
 	// Хук эффекта - при первой загрузке
 	useEffect(() => {
 		// Получить список всех задач текущей карточки из localStorage
-		setTasks(getTasks());
+		getTasks();
 	}, [updateData]) // eslint-disable-line
 
 	return (
@@ -74,8 +65,12 @@ const CardTasks = ({id}) => {
 				<div className="card-tasks__list">
 					{tasks.map(el =>
 						<div className="card-tasks__item" key={el.id}>
-							<span>{el.text}</span>
-							<Icons name={"icon-remove-thin"} onClick={() => deleteTask(el.id)} />
+							<span>{el.name}</span>
+							<div className="card-tasks__controls">
+								<Icons name={"icon-arrow-left"} onClick={() => moveTask(el, -1)} />
+								<Icons name={"icon-arrow-right"} onClick={() => moveTask(el, 1)} />
+								<Icons name={"icon-remove-thin"} onClick={() => deleteTask(el.id)} />
+							</div>
 						</div>
 					)}
 				</div>

@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+// Операции хранилища
+import LocalStorage from "../../utils/localStorage";
+
 // Импорт контекста
 import {СontextFlow} from "../../context";
 
@@ -21,19 +24,11 @@ const Boards = () => {
 	// Обмен контекстом - Подгрузка приложения
 	let {updateData} = useContext(СontextFlow);
 
-	// Получить список досок из localStorage
-	const getAllBoards = () => {
-		return JSON.parse(localStorage.getItem("boards")) || [];
-	};
-
 	// Создание новой доски
 	const createBoard = () => {
-		// Получить список досок из localStorage
-		let storage = getAllBoards();
-		// Поместить новую доску
-		storage.push({ id: Date.now(), name: boardName });
-		// Обновить список досок в localStorage
-		updateBoards(storage);
+		LocalStorage.boards.create(boardName);
+		// Обновить список
+		getBoards();
 		// Закрыть модальное окно
 		setModal(false);
 		// Очистить название новой доски
@@ -42,12 +37,9 @@ const Boards = () => {
 
 	// Изменить доску
 	const editBoard = (id) => {
-		// Получить список досок из localStorage
-		let storage = getAllBoards();
-		// Отсеять доску по id и задать новое имя
-		storage.map(el => el.id === id && (el.name = boardName));
-		// Обновить список досок в localStorage
-		updateBoards(storage);
+		LocalStorage.boards.edit(id, boardName)
+		// Обновить список
+		getBoards();
 		// Закрыть модальное окно
 		setModal(false);
 		// Очистить название новой доски
@@ -56,25 +48,20 @@ const Boards = () => {
 
 	// Удалить доску
 	const deleteBoard = (id) => {
-		// Получить список досок из localStorage
-		let storage = getAllBoards();
-		// Отсеять доску по id
-		storage = storage.filter(el => el.id !== id);
-		// Обновить список досок в localStorage
-		updateBoards(storage);
+		LocalStorage.boards.delete(id);
+		// Обновить список
+		getBoards();
 	};
 
-	// Обновить список досок в localStorage
-	const updateBoards = (storage) => {
-		localStorage.setItem('boards', JSON.stringify(storage));
-		// Получить список досок из localStorage
-		setBoards(getAllBoards());
+	// Получить список досок из localStorage
+	const getBoards = () => {
+		setBoards(LocalStorage.boards.storage);
 	};
 
 	// Хук эффекта - при первой загрузке
 	useEffect(() => {
 		// Получить список досок из localStorage
-		setBoards(getAllBoards());
+		getBoards();
 	}, [updateData]) // eslint-disable-line
 
 	return (

@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+// Операции хранилища
+import LocalStorage from "../../utils/localStorage";
+
 // Импорт контекста
 import {СontextFlow} from "../../context";
 
@@ -26,26 +29,12 @@ const BoardCards = () => {
 
 	// Обмен контекстом - Обновление localStorage
 	let {updateData} = useContext(СontextFlow);
-	
-	// Получить список карточек текущей доски из localStorage
-	const getCards = () => {
-		let data = JSON.parse(localStorage.getItem("cards"));
-		return data.filter(el => el.parent_id == id) || [];
-	};
-
-	// Получить список всех карточек из localStorage
-	const getAllCards = () => {
-		return JSON.parse(localStorage.getItem("cards")) || [];
-	};
 
 	// Создание новой карточки
 	const createCard = () => {
-		// Получить список всех карточек из localStorage
-		let storage = getAllCards();
-		// Поместить новую карточку
-		storage.push({ id: Date.now(), parent_id: id, name: cardName });
-		// Обновить список карточек в localStorage
-		updateCards(storage);
+		LocalStorage.cards.create(id, cardName);
+		// Обновить список
+		getCards();
 		// Закрыть модальное окно
 		setModal(false);
 		// Очистить название новой карточки
@@ -54,25 +43,20 @@ const BoardCards = () => {
 
 	// Удалить карточку
 	const deleteСard = (id) => {
-		// Получить список всех карточек из localStorage
-		let storage = getAllCards();
-		// Отсеять карточку по id
-		storage = storage.filter(el => el.id !== id);
-		// Обновить список карточек в localStorage
-		updateCards(storage);
+		LocalStorage.cards.delete(id);
+		// Обновить список
+		getCards();
 	};
 
-	// Обновить список карточек в localStorage
-	const updateCards = (storage) => {
-		localStorage.setItem('cards', JSON.stringify(storage));
-		// Получить список карточек текущей доски из localStorage
-		setCards(getCards());
+	// Получить список карточек текущей доски из localStorage
+	const getCards = () => {
+		setCards(LocalStorage.cards.get(id));
 	};
 
 	// Хук эффекта - при первой загрузке
 	useEffect(() => {
 		// Получить список карточек текущей доски из localStorage
-		setCards(getCards());
+		getCards();
 	}, [updateData]) // eslint-disable-line
 
 	return (
@@ -95,7 +79,6 @@ const BoardCards = () => {
 					</div>
 				}
 			</div>
-
 
 			{modal &&
 				<div className="modal">

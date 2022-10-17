@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+// Операции хранилища
+import LocalStorage from "../../utils/localStorage";
+
 // Импорт контекста
 import {СontextFlow} from "../../context";
 
@@ -22,14 +25,13 @@ const Board = () => {
 
 	// Получить текущую доску из localStorage
 	const getBoard = () => {
-		let data = JSON.parse(localStorage.getItem("boards"));
-		return data.filter(el => el.id == id)[0] || [];
+		setBoard(LocalStorage.boards.get(id));
 	};
 
 	// Хук эффекта - при первой загрузке
 	useEffect(() => {
 		// Получить текущую доску из localStorage
-		setBoard(getBoard());
+		getBoard();
 	}, [updateData]) // eslint-disable-line
 
 	return (
