@@ -1,7 +1,7 @@
 const LocalStorage = function() {};
 
 // Доски
-LocalStorage.boards = new Object({
+LocalStorage.boards = {
     // Хранилище
     storage: [],
 	// Получить список всех досок из localStorage
@@ -43,15 +43,18 @@ LocalStorage.boards = new Object({
 		this.storage = this.storage.filter(el => el.id !== id);
 		// Переписать список досок в localStorage
 		this.set();
+		// Удалить все карточки доски
+		LocalStorage.cards.getAll().filter(el => el.parent_id == id).map(el => LocalStorage.cards.delete(el.id));
+
     },
 	// Переписать список досок в localStorage
     set: function() {
 		localStorage.setItem("boards", JSON.stringify(this.storage));
     }
-})
+}
 
 // Карточки
-LocalStorage.cards = new Object({
+LocalStorage.cards = {
     // Хранилище
     storage: [],
 	// Получить список всех карточек из localStorage
@@ -86,15 +89,17 @@ LocalStorage.cards = new Object({
 		this.storage = this.storage.filter(el => el.id !== id);
 		// Переписать список карточек в localStorage
 		this.set();
+		// Удалить все задачи карточки
+		LocalStorage.tasks.getAll().filter(el => el.parent_id == id).map(el => LocalStorage.tasks.delete(el.id));
     },
 	// Переписать список карточек в localStorage
 	set: function() {
 		localStorage.setItem("cards", JSON.stringify(this.storage));
     }
-})
+}
 
 // Задачи
-LocalStorage.tasks = new Object({
+LocalStorage.tasks = {
     // Хранилище
     storage: [],
 	// Получить список всех задач из localStorage
@@ -149,6 +154,6 @@ LocalStorage.tasks = new Object({
     set: function() {
 		localStorage.setItem("tasks", JSON.stringify(this.storage));
     }
-})
+}
 
 export default LocalStorage;
