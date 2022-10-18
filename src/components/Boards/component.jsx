@@ -55,10 +55,10 @@ const Boards = () => {
 
 	// Получить список досок из localStorage
 	const getBoards = () => {
-		setBoards(LocalStorage.boards.storage);
+		setBoards(LocalStorage.boards.getAll());
 	};
 
-	// Хук эффекта - при первой загрузке
+	// Хук эффекта - при обновление localStorage
 	useEffect(() => {
 		// Получить список досок из localStorage
 		getBoards();
@@ -106,6 +106,7 @@ const Boards = () => {
 									<input
 										value={boardName}
 										onChange={e => setBoardName(e.target.value )}
+										autoFocus={true}
 									/>
 									<button type="submit" onClick={(e) => {e.preventDefault(); editBoard(modal.id)}} >Изменить</button>
 								</form>

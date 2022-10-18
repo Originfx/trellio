@@ -20,8 +20,8 @@ const CardTasks = ({id}) => {
 	// Модальное окно
 	let [modal, setModal] = useState(false);
 
-	// Обмен контекстом - Обновление localStorage
-	let {updateData} = useContext(СontextFlow);
+	// Обмен контекстом - Обновление данных из localStorage
+	let {updateData, setUpdateData} = useContext(СontextFlow);
 
 	// Создание новой задачи
 	const createTask = () => {
@@ -37,8 +37,8 @@ const CardTasks = ({id}) => {
 	// Создание новой задачи
 	const moveTask = (el, direction) => {
 		LocalStorage.tasks.move(el, direction);
-		// Обновить список
-		getTasks();
+		// Обновление данных из localStorage
+		setUpdateData(!updateData)
 	}
 
 	// Удалить задачу
@@ -50,10 +50,10 @@ const CardTasks = ({id}) => {
 
 	// Получить список всех задач текущей карточки из localStorage
 	const getTasks = () => {
-		setTasks(LocalStorage.tasks.get(id));
+		setTasks(LocalStorage.tasks.getOne(id));
 	};
 
-	// Хук эффекта - при первой загрузке
+	// Хук эффекта - при обновление localStorage
 	useEffect(() => {
 		// Получить список всех задач текущей карточки из localStorage
 		getTasks();

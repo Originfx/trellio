@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Операции хранилища
 import LocalStorage from "../../utils/localStorage";
@@ -14,6 +14,8 @@ import BoardCards from "../BoardCards";
 import "./style.scss";
 
 const Board = () => {
+
+	let redirect = useNavigate();
 	// Получить код доски из адресной строки
 	let {id} = useParams()
 
@@ -25,10 +27,12 @@ const Board = () => {
 
 	// Получить текущую доску из localStorage
 	const getBoard = () => {
-		setBoard(LocalStorage.boards.get(id));
-	};
+		let data = LocalStorage.boards.getOne(id);
+		// Если нет имени - редирект на главную
+		data.name ? setBoard(data) : redirect("/");
+	}
 
-	// Хук эффекта - при первой загрузке
+	// Хук эффекта - при обновление localStorage
 	useEffect(() => {
 		// Получить текущую доску из localStorage
 		getBoard();

@@ -25,7 +25,6 @@ const App = () => {
 		setUpdateData(!updateData)
 	}
 
-
 	// Хук эффекта - Один раз
 	useEffect(() => {
 		// Приложение загружено
@@ -35,7 +34,8 @@ const App = () => {
 	return (
 		<СontextFlow.Provider
 			value={{
-				appLoading, updateData
+				appLoading,
+				updateData, setUpdateData
         	}}
 		>
 			<BrowserRouter>

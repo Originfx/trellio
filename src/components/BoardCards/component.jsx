@@ -50,10 +50,10 @@ const BoardCards = () => {
 
 	// Получить список карточек текущей доски из localStorage
 	const getCards = () => {
-		setCards(LocalStorage.cards.get(id));
+		setCards(LocalStorage.cards.getOne(id));
 	};
 
-	// Хук эффекта - при первой загрузке
+	// Хук эффекта - при обновление localStorage
 	useEffect(() => {
 		// Получить список карточек текущей доски из localStorage
 		getCards();
